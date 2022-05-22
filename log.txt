@@ -1,0 +1,63 @@
+CCTV初始化...
+摄像头分辨率 640.0 x 480.0 @ 15.0 fps
+储存路径 /home/yaosheng/cctv/
+Sun May 22 16:58:54 2022 16 !====== -1
+Sun May 22 16:58:54 2022 录制停止 __init__
+
+Sun May 22 16:58:54 2022 CCTV开始录制 /home/yaosheng/cctv/2022-5-22/16.mp4
+录制分辨率 640.0 x 480.0 @ 15.0 fps
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+CCTV初始化...
+摄像头分辨率 0.0 x 0.0 @ 0.0 fps
+储存路径 /home/yaosheng/cctv/
+Sun May 22 17:07:33 2022 17 !====== -1
+Sun May 22 17:07:33 2022 录制停止 __init__
+
+Sun May 22 17:07:33 2022 CCTV开始录制 /home/yaosheng/cctv/2022-5-22/17.mp4
+录制分辨率 0.0 x 0.0 @ 0.0 fps
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+CCTV初始化...
+摄像头分辨率 640.0 x 480.0 @ 15.0 fps
+储存路径 /home/yaosheng/cctv/
+Sun May 22 17:09:36 2022 17 !====== -1
+Sun May 22 17:09:37 2022 录制停止 __init__
+
+Sun May 22 17:09:37 2022 CCTV开始录制 /home/yaosheng/cctv/2022-5-22/17.mp4
+录制分辨率 640.0 x 480.0 @ 15.0 fps
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+192.168.31.114 - - [22/May/2022 17:09:46] "[37mGET /video_feed?token=zyg19960622 HTTP/1.1[0m" 200 -
+192.168.31.155 - - [22/May/2022 17:10:11] "[37mGET /video_feed?token=zyg19960622 HTTP/1.1[0m" 200 -
+CCTV初始化...
+摄像头分辨率 640.0 x 480.0 @ 15.0 fps
+储存路径 /home/yaosheng/cctv/
+Sun May 22 18:25:39 2022 18 !====== -1
+Sun May 22 18:25:39 2022 录制停止 __init__
+
+Sun May 22 18:25:39 2022 CCTV开始录制 /home/yaosheng/cctv/2022-5-22/18.mp4
+录制分辨率 640.0 x 480.0 @ 15.0 fps
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+192.168.31.155 - - [22/May/2022 18:25:41] "[37mGET /video_feed?token=zyg19960622 HTTP/1.1[0m" 200 -
+192.168.31.155 - - [22/May/2022 18:26:55] "[37mGET /video_feed?token=zyg19960622 HTTP/1.1[0m" 200 -
+192.168.31.155 - - [22/May/2022 18:34:32] "[37mGET /video_feed?token=zyg19960622 HTTP/1.1[0m" 200 -
+192.168.31.155 - - [22/May/2022 18:38:18] "[37mGET /video_feed?token=zyg19960622 HTTP/1.1[0m" 200 -
+192.168.31.155 - - [22/May/2022 18:50:55] "[37mGET /video_feed?token=zyg19960622 HTTP/1.1[0m" 200 -
+192.168.31.155 - - [22/May/2022 19:02:02] "[37mGET /video_feed?token=zyg19960622 HTTP/1.1[0m" 200 -
+192.168.31.155 - - [22/May/2022 19:38:51] "[37mGET /video_feed?token=zyg19960622 HTTP/1.1[0m" 200 -

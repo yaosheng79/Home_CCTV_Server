@@ -1,16 +1,12 @@
 from flask import Flask,request,Response,render_template
 from cctv import CCTV
-from servo import MyServo
 
 app = Flask(__name__)
 
 token = "zyg19960622"
 
-cctv = CCTV(save_path='/Users/mike/Desktop/cctv/')
-# cctv.start_record()
-s0 = MyServo(18)
-s1 = MyServo(23,default_postion=90)
-
+cctv = CCTV(save_path='/home/yaosheng/cctv/')
+cctv.start_record()
 
 @app.route('/video')
 def index():
@@ -22,28 +18,15 @@ def hello_world():
 
 
 @app.route('/stop')
-def get_user():
+def stop():
     cctv.stop_record()
     return "Stopped"
 
 
-@app.route('/reposition')
-def servo_reposition():
-    if request.args['token'] == token:
-        servo_id = int(request.args['id'])
-        angle = int(request.args['angle'])
-
-        if servo_id == 0:
-            print(0,'to',angle)
-            s0.reposition(angle)
-
-        elif servo_id == 1:
-            s1.reposition(angle)
-            print(1,"to",angle)
-
-        return "OK"
-    else:
-        return "Wrong Token"
+@app.route('/start')
+def start():
+    cctv.start_record()
+    return "Started"
 
 
 def gen(cctv):
