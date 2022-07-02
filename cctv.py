@@ -32,7 +32,7 @@ class CCTV():
 
     def __init__(self,save_path='/'):
         threading.Thread.__init__(self)
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(2)
         # set resolution
         self.frame_width = 1024
         self.frame_height = 768
@@ -53,7 +53,7 @@ class CCTV():
 
         now = datetime.datetime.now()
         date = str(now.year)+'-'+str(now.month)+'-'+str(now.day)
-        hour = now.hour
+        hour = now.minute #now.hour
 
 
         if hour != self.current_hour:

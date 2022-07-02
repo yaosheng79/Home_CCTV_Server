@@ -3,5 +3,5 @@
 ## run in background
 
 ```
-python app.py >> log.txt 2>&1 &
+nohup python app.py >> log.txt 2>&1 &
 ```
