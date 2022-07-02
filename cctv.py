@@ -113,6 +113,7 @@ class RecordThread(threading.Thread):
             ret1, frame1 = self.cap1.read()
             frame1 = draw_time_label(frame1)
             ret2, frame2 = self.cap2.read()
+            frame2 = draw_time_label(frame2)
             frame = np.concatenate((frame1, frame2), axis=1)
             if ret:
                 out.write(frame)
