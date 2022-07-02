@@ -4,6 +4,7 @@
 # Copyright © 2020 Yigang Zhou. All rights reserved.
 
 import cv2
+import numpy as np
 import time
 import threading
 import datetime
@@ -32,22 +33,27 @@ class CCTV():
 
     def __init__(self,save_path='/'):
         threading.Thread.__init__(self)
-        self.cap = cv2.VideoCapture(2)
+        self.cap1 = cv2.VideoCapture(0)
+        self.cap2 = cv2.VideoCapture(2)
         # set resolution
         self.frame_width = 1024
         self.frame_height = 768
-        self.cap.set(3, self.frame_width)
-        self.cap.set(4, self.frame_height)
+        self.cap1.set(3, self.frame_width)
+        self.cap1.set(4, self.frame_height)
+        self.cap2.set(3, self.frame_width)
+        self.cap2.set(4, self.frame_height)
         self.current_hour = -1
         self.record_thread = None
         self.save_path = save_path
         print("CCTV初始化...")
-        print("摄像头分辨率", self.cap.get(3), "x", self.cap.get(4), "@", self.cap.get(cv2.CAP_PROP_FPS), "fps")
+        print("摄像头1分辨率", self.cap1.get(3), "x", self.cap1.get(4), "@", self.cap1.get(cv2.CAP_PROP_FPS), "fps")
+        print("摄像头2分辨率", self.cap2.get(3), "x", self.cap2.get(4), "@", self.cap2.get(cv2.CAP_PROP_FPS), "fps")
         print("储存路径", self.save_path)
 
 
     def __del__(self):
-        self.cap.release()
+        self.cap1.release()
+        self.cap2.release()
 
     def start_record(self):
 
@@ -65,7 +71,7 @@ class CCTV():
             if self.record_thread != None:
                 self.record_thread.stop()
 
-            self.record_thread = RecordThread(self.cap, file_path)
+            self.record_thread = RecordThread(self.cap1, self.cap2, file_path)
             self.record_thread.start()
             self.current_hour = hour
         threading.Timer(1, self.start_record).start()
@@ -82,13 +88,14 @@ class CCTV():
 
 class RecordThread(threading.Thread):
 
-    def __init__(self, cap, file_path):
+    def __init__(self, cap1, cap2, file_path):
         threading.Thread.__init__(self)
         self.file_path = file_path
-        self.cap = cap
+        self.cap1 = cap1
+        self.cap2 = cap2
         # rotated width and height
-        self.frame_width = int(self.cap.get(4))
-        self.frame_height = int(self.cap.get(3))
+        self.frame_width = int(self.cap1.get(4)) * 2
+        self.frame_height = int(self.cap1.get(3))
         print(time.ctime(), "录制停止 __init__\n")
         self.stopped = True
         out = None
@@ -97,14 +104,16 @@ class RecordThread(threading.Thread):
         print(time.ctime(), "CCTV开始录制", self.file_path)
         self.stopped = False
         fourcc = cv2.VideoWriter_fourcc(*'avc1')
-        frame_rate = self.cap.get(cv2.CAP_PROP_FPS)
-        print("录制分辨率", self.cap.get(3), "x", self.cap.get(4), "@", frame_rate, "fps")
+        frame_rate = self.cap1.get(cv2.CAP_PROP_FPS)
+        print("录制分辨率", self.cap1.get(3), "x", self.cap1.get(4), "@", frame_rate, "fps")
 
         out = cv2.VideoWriter(self.file_path, fourcc, frame_rate, (self.frame_width, self.frame_height))
 
         while True:
-            ret, frame = self.cap.read()
-            frame = draw_time_label(frame)
+            ret1, frame1 = self.cap1.read()
+            frame1 = draw_time_label(frame1)
+            ret2, frame2 = self.cap2.read()
+            frame = np.concatenate((frame1, frame2), axis=1)
             if ret:
                 out.write(frame)
 
