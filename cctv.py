@@ -61,7 +61,7 @@ class CCTV():
 
         now = datetime.datetime.now()
         date = str(now.year)+'-'+str(now.month)+'-'+str(now.day)
-        hour = now.minute #now.hour
+        hour = now.hour
 
 
         if hour != self.current_hour:
