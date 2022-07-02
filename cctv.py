@@ -12,9 +12,9 @@ from pathlib import Path
 import collections
 
 frame_queue = collections.deque(maxlen=2)
-def draw_time_label(frame):
+def draw_time_label(frame1, frame2):
     """
-    旋转frame，并加入时间label
+    旋转、合并frame1、frame2，并加入时间label
     :param frame:
     :return:
     """
@@ -23,7 +23,9 @@ def draw_time_label(frame):
     scale = 0.75
     color = (127, 63, 255)
     thickness = 2
-    f = cv2.rotate(frame, cv2.cv2.ROTATE_90_CLOCKWISE)
+    f1 = cv2.rotate(frame1, cv2.cv2.ROTATE_90_CLOCKWISE)
+    f2 = cv2.rotate(frame2, cv2.cv2.ROTATE_90_CLOCKWISE)
+    f = np.concatenate((f1, f2), axis=1)
     f = cv2.putText(f, text, (10, 30), font_face, scale, color, thickness, cv2.LINE_AA)
     frame_queue.append(f)
     return f
@@ -111,11 +113,9 @@ class RecordThread(threading.Thread):
 
         while True:
             ret1, frame1 = self.cap1.read()
-            frame1 = draw_time_label(frame1)
             ret2, frame2 = self.cap2.read()
-            frame2 = draw_time_label(frame2)
-            frame = np.concatenate((frame1, frame2), axis=1)
             if ret1 and ret2:
+                frame = draw_time_label(frame1, frame2)
                 out.write(frame)
 
             if self.stopped:
