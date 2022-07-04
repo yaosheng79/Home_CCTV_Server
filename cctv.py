@@ -67,7 +67,7 @@ class CCTV():
         if hour != self.current_hour:
             print(time.ctime(), hour, "!======", self.current_hour)
             path = self.save_path + date + '/'
-            file_path = path + str(hour) + '.mp4'
+            file_path = path + str(hour) + '.avi'
             Path(path).mkdir(parents=True, exist_ok=True)
 
             if self.record_thread != None:
@@ -105,7 +105,7 @@ class RecordThread(threading.Thread):
     def run(self):
         print(time.ctime(), "CCTV开始录制", self.file_path)
         self.stopped = False
-        fourcc = cv2.VideoWriter_fourcc(*'avc1')
+        fourcc = cv2.VideoWriter_fourcc(*'H264')
         frame_rate = self.cap1.get(cv2.CAP_PROP_FPS)
         print("录制分辨率", self.cap1.get(3), "x", self.cap1.get(4), "@", frame_rate, "fps")
 
@@ -117,6 +117,8 @@ class RecordThread(threading.Thread):
             if ret1 and ret2:
                 frame = draw_time_label(frame1, frame2)
                 out.write(frame)
+            else:
+                print(time.ctime(), "Error: ret1=", ret1, "ret2=", ret2)
 
             if self.stopped:
                 # out.release()
