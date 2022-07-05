@@ -63,7 +63,18 @@ class CCTV():
         date = str(now.year)+'-'+str(now.month)+'-'+str(now.day)
         hour = now.hour
 
-
+        if not self.cap1.isOpened():
+            print(time.ctime(), "@@@@@@ reopen cap1 @@@@@@\n")
+            self.cap1 = cv2.VideoCapture(0)
+            self.cap1.set(3, self.frame_width)
+            self.cap1.set(4, self.frame_height)
+            self.record_thread.setCap1(self.cap1)
+        if not self.cap2.isOpened():
+            print(time.ctime(), "@@@@@@ reopen cap2 @@@@@@\n")
+            self.cap2 = cv2.VideoCapture(2)
+            self.cap2.set(3, self.frame_width)
+            self.cap2.set(4, self.frame_height)
+            self.record_thread.setCap2(self.cap2)
         if hour != self.current_hour:
             print(time.ctime(), hour, "!======", self.current_hour)
             path = self.save_path + date + '/'
@@ -112,14 +123,18 @@ class RecordThread(threading.Thread):
         out = cv2.VideoWriter(self.file_path, fourcc, frame_rate, (self.frame_width, self.frame_height))
 
         while True:
-            ret1, frame1 = self.cap1.read()
-            ret2, frame2 = self.cap2.read()
-            if ret1 and ret2:
-                frame = draw_time_label(frame1, frame2)
-                out.write(frame)
+            op1 = self.cap1.isOpened()
+            op2 = self.cap2.isOpened()
+            if op1 and op2:
+                ret1, frame1 = self.cap1.read()
+                ret2, frame2 = self.cap2.read()
+                if ret1 and ret2:
+                    frame = draw_time_label(frame1, frame2)
+                    out.write(frame)
+                else:
+                    print(time.ctime(), "!!!!!! ret1=", ret1, "ret2=", ret2, " !!!!!!\n")
             else:
-                print(time.ctime(), "Error: ret1=", ret1, "ret2=", ret2)
-
+                print(time.ctime(), "!!!!!! op1=", op1, " op2=", op2, " !!!!!!\n")
             if self.stopped:
                 # out.release()
                 print(time.ctime(), "录制停止\n")
@@ -129,3 +144,8 @@ class RecordThread(threading.Thread):
         print(time.ctime(), "录制停止 stop\n")
         self.stopped = True
         self.join()
+
+    def setCap1(cap1):
+        self.cap1 = cap1
+    def setCap2(cap2):
+        self.cap2 = cap2
