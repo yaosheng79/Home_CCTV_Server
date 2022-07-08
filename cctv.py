@@ -49,18 +49,19 @@ class CCTV():
         try:
             self.cap1.release()
             self.cap2.release()
-        self.cap1 = cv2.VideoCapture(0)
-        self.cap2 = cv2.VideoCapture(2)
-        # set resolution
-        self.frame_width = 1024
-        self.frame_height = 768
-        self.cap1.set(3, self.frame_width)
-        self.cap1.set(4, self.frame_height)
-        self.cap2.set(3, self.frame_width)
-        self.cap2.set(4, self.frame_height)
-        print("CCTV初始化...")
-        print("摄像头1分辨率", self.cap1.get(3), "x", self.cap1.get(4), "@", self.cap1.get(cv2.CAP_PROP_FPS), "fps")
-        print("摄像头2分辨率", self.cap2.get(3), "x", self.cap2.get(4), "@", self.cap2.get(cv2.CAP_PROP_FPS), "fps")
+        finally:
+            self.cap1 = cv2.VideoCapture(0)
+            self.cap2 = cv2.VideoCapture(2)
+            # set resolution
+            self.frame_width = 1024
+            self.frame_height = 768
+            self.cap1.set(3, self.frame_width)
+            self.cap1.set(4, self.frame_height)
+            self.cap2.set(3, self.frame_width)
+            self.cap2.set(4, self.frame_height)
+            print("CCTV初始化...")
+            print("摄像头1分辨率", self.cap1.get(3), "x", self.cap1.get(4), "@", self.cap1.get(cv2.CAP_PROP_FPS), "fps")
+            print("摄像头2分辨率", self.cap2.get(3), "x", self.cap2.get(4), "@", self.cap2.get(cv2.CAP_PROP_FPS), "fps")
 
     def start_record(self):
 
