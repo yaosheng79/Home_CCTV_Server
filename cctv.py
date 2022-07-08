@@ -35,6 +35,20 @@ class CCTV():
 
     def __init__(self,save_path='/'):
         threading.Thread.__init__(self)
+        self.current_hour = -1
+        self.record_thread = None
+        self.init_cap()
+        self.save_path = save_path
+        print("储存路径", self.save_path)
+
+    def __del__(self):
+        self.cap1.release()
+        self.cap2.release()
+
+    def init_cap(self):
+        try:
+            self.cap1.release()
+            self.cap2.release()
         self.cap1 = cv2.VideoCapture(0)
         self.cap2 = cv2.VideoCapture(2)
         # set resolution
@@ -44,18 +58,9 @@ class CCTV():
         self.cap1.set(4, self.frame_height)
         self.cap2.set(3, self.frame_width)
         self.cap2.set(4, self.frame_height)
-        self.current_hour = -1
-        self.record_thread = None
-        self.save_path = save_path
         print("CCTV初始化...")
         print("摄像头1分辨率", self.cap1.get(3), "x", self.cap1.get(4), "@", self.cap1.get(cv2.CAP_PROP_FPS), "fps")
         print("摄像头2分辨率", self.cap2.get(3), "x", self.cap2.get(4), "@", self.cap2.get(cv2.CAP_PROP_FPS), "fps")
-        print("储存路径", self.save_path)
-
-
-    def __del__(self):
-        self.cap1.release()
-        self.cap2.release()
 
     def start_record(self):
 
@@ -83,9 +88,10 @@ class CCTV():
 
             if self.record_thread != None:
                 self.record_thread.stop()
-
-            self.record_thread = RecordThread(self.cap1, self.cap2, file_path)
-            self.record_thread.start()
+            if hour>8 and hour<20:
+                self.init_cap()
+                self.record_thread = RecordThread(self.cap1, self.cap2, file_path)
+                self.record_thread.start()
             self.current_hour = hour
         threading.Timer(1, self.start_record).start()
 
