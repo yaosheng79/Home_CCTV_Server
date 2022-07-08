@@ -70,18 +70,6 @@ class CCTV():
         date = str(now.year)+'-'+str(now.month)+'-'+str(now.day)
         hour = now.hour
 
-        if not self.cap1.isOpened():
-            print(time.ctime(), "@@@@@@ reopen cap1 @@@@@@\n")
-            self.cap1 = cv2.VideoCapture(0)
-            self.cap1.set(3, self.frame_width)
-            self.cap1.set(4, self.frame_height)
-            self.record_thread.setCap1(self.cap1)
-        if not self.cap2.isOpened():
-            print(time.ctime(), "@@@@@@ reopen cap2 @@@@@@\n")
-            self.cap2 = cv2.VideoCapture(2)
-            self.cap2.set(3, self.frame_width)
-            self.cap2.set(4, self.frame_height)
-            self.record_thread.setCap2(self.cap2)
         if hour != self.current_hour:
             print(time.ctime(), hour, "!======", self.current_hour)
             path = self.save_path + date + '/'
