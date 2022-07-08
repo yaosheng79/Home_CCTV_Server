@@ -71,14 +71,14 @@ class CCTV():
         hour = now.hour
 
         if hour != self.current_hour:
+            if self.record_thread != None:
+                self.record_thread.stop()
             print(time.ctime(), hour, "!======", self.current_hour)
             path = self.save_path + date + '/'
             file_path = path + str(hour) + '.avi'
             Path(path).mkdir(parents=True, exist_ok=True)
 
             self.deinit_cap()
-            if self.record_thread != None:
-                self.record_thread.stop()
             if hour>8 and hour<20:
                 self.init_cap()
                 self.record_thread = RecordThread(self.cap1, self.cap2, file_path)
@@ -143,8 +143,3 @@ class RecordThread(threading.Thread):
         print(time.ctime(), "录制停止 stop\n")
         self.stopped = True
         self.join()
-
-    def setCap1(cap1):
-        self.cap1 = cap1
-    def setCap2(cap2):
-        self.cap2 = cap2
