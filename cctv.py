@@ -50,8 +50,6 @@ class CCTV():
         self.cap2.release()
 
     def init_cap(self):
-        self.cap1.release()
-        self.cap2.release()
         self.cap1 = cv2.VideoCapture(0)
         self.cap2 = cv2.VideoCapture(2)
         # set resolution
@@ -63,8 +61,11 @@ class CCTV():
         print("摄像头1分辨率", self.cap1.get(3), "x", self.cap1.get(4), "@", self.cap1.get(cv2.CAP_PROP_FPS), "fps")
         print("摄像头2分辨率", self.cap2.get(3), "x", self.cap2.get(4), "@", self.cap2.get(cv2.CAP_PROP_FPS), "fps")
 
-    def start_record(self):
+    def deinit_cap(self):
+        self.cap1.release()
+        self.cap2.release()
 
+    def start_record(self):
         now = datetime.datetime.now()
         date = str(now.year)+'-'+str(now.month)+'-'+str(now.day)
         hour = now.hour
@@ -87,12 +88,15 @@ class CCTV():
             file_path = path + str(hour) + '.avi'
             Path(path).mkdir(parents=True, exist_ok=True)
 
+            self.deinit_cap()
             if self.record_thread != None:
                 self.record_thread.stop()
             if hour>8 and hour<20:
                 self.init_cap()
                 self.record_thread = RecordThread(self.cap1, self.cap2, file_path)
                 self.record_thread.start()
+            else:
+                print(time.ctime(), "No recording at night")
             self.current_hour = hour
         threading.Timer(1, self.start_record).start()
 
