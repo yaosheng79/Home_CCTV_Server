@@ -37,6 +37,10 @@ class CCTV():
         threading.Thread.__init__(self)
         self.current_hour = -1
         self.record_thread = None
+        self.frame_width = 1024
+        self.frame_height = 768
+        self.cap1 = cv2.VideoCapture(0)
+        self.cap2 = cv2.VideoCapture(2)
         self.init_cap()
         self.save_path = save_path
         print("储存路径", self.save_path)
@@ -46,22 +50,18 @@ class CCTV():
         self.cap2.release()
 
     def init_cap(self):
-        try:
-            self.cap1.release()
-            self.cap2.release()
-        finally:
-            self.cap1 = cv2.VideoCapture(0)
-            self.cap2 = cv2.VideoCapture(2)
-            # set resolution
-            self.frame_width = 1024
-            self.frame_height = 768
-            self.cap1.set(3, self.frame_width)
-            self.cap1.set(4, self.frame_height)
-            self.cap2.set(3, self.frame_width)
-            self.cap2.set(4, self.frame_height)
-            print("CCTV初始化...")
-            print("摄像头1分辨率", self.cap1.get(3), "x", self.cap1.get(4), "@", self.cap1.get(cv2.CAP_PROP_FPS), "fps")
-            print("摄像头2分辨率", self.cap2.get(3), "x", self.cap2.get(4), "@", self.cap2.get(cv2.CAP_PROP_FPS), "fps")
+        self.cap1.release()
+        self.cap2.release()
+        self.cap1 = cv2.VideoCapture(0)
+        self.cap2 = cv2.VideoCapture(2)
+        # set resolution
+        self.cap1.set(3, self.frame_width)
+        self.cap1.set(4, self.frame_height)
+        self.cap2.set(3, self.frame_width)
+        self.cap2.set(4, self.frame_height)
+        print("CCTV初始化...")
+        print("摄像头1分辨率", self.cap1.get(3), "x", self.cap1.get(4), "@", self.cap1.get(cv2.CAP_PROP_FPS), "fps")
+        print("摄像头2分辨率", self.cap2.get(3), "x", self.cap2.get(4), "@", self.cap2.get(cv2.CAP_PROP_FPS), "fps")
 
     def start_record(self):
 
